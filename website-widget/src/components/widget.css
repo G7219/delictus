@@ -1,0 +1,53 @@
+/* Shadow-DOM isolated — these rules never leak onto the broker's page,
+   and the broker's page styles never leak in. */
+.dse-widget-launcher {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--brand-accent, #0f172a);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.dse-widget-panel {
+  position: fixed;
+  bottom: 88px;
+  right: 20px;
+  width: 320px;
+  height: 420px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+}
+
+.dse-widget-thread {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.dse-widget-message {
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  max-width: 80%;
+  font-size: 13px;
+}
+.dse-widget-message.customer {
+  background: var(--brand-accent, #0f172a);
+  color: #fff;
+  margin-left: auto;
+}
+.dse-widget-message.bot {
+  background: #f1f5f9;
+  color: #0f172a;
+}

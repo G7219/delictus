@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  AGENT
+}
+
+enum SubscriptionPlan {
+  STARTER
+  GROWTH
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+enum Sender {
+  CUSTOMER
+  AGENT
+  SYSTEM
+}
+
+enum ChatStatus {
+  BOT
+  HUMAN_WAITING
+  HUMAN_ACTIVE
+}
+
+model Tenant {
+  id                    String             @id @default(cuid())
+  companyName           String
+  slug                  String             @unique
+  defaultLanguage       String             @default("en")
+  subscriptionPlan      SubscriptionPlan   @default(STARTER)
+  subscriptionStatus    SubscriptionStatus @default(PENDING)
+  setupFeePaid          Boolean            @default(false)
+  brokerCoreApiUrl      String?
+  brokerCoreApiKey      String?
+  whatsappPhoneNumberId String?
+  whatsappWabaId       String?
+  whatsappAccessToken  String?
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  agents                Agent[]
+  chatSessions          ChatSession[]
+  invoices              Invoice[]
+}
+
+model Agent {
+  id           String   @id @default(cuid())
+  tenantId     String
+  tenant       Tenant    @relation(fields: [tenantId], references: [id])
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(AGENT)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ChatSession {
+  id            String      @id
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id])
+  customerPhone String
+  language      String      @default("en")
+  status        ChatStatus  @default(BOT)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  messages      Message[]
+}
+
+model Message {
+  id            String   @id @default(cuid())
+  chatSessionId String
+  chatSession   ChatSession @relation(fields: [chatSessionId], references: [id])
+  sender        Sender
+  text          String
+  createdAt     DateTime @default(now())
+}
+
+model Invoice {
+  id          String   @id @default(cuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  amountTzs   Int
+  purpose     String
+  status      String   @default("PENDING")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

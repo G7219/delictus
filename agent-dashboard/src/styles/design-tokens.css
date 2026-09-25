@@ -1,0 +1,20 @@
+/**
+ * CSS custom properties mirroring tailwind.config.js, for the rare case a
+ * component needs a raw var() instead of a Tailwind class (e.g. inline
+ * SVG fills, chart libraries). Keep these two files in sync by hand —
+ * there are few enough tokens that a build-time generator is overkill.
+ */
+:root {
+  --color-navy: #0f172a;
+  --color-surface: #1e293b;
+  --color-surface-hover: #263449;
+  --color-border: #2d3b52;
+  --color-gold: #d97706;
+  --color-emerald: #059669;
+  --color-rose: #dc2626;
+  --color-ink: #e2e8f0;
+  --color-muted: #8b9ab3;
+
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
